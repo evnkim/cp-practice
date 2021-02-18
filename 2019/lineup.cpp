@@ -10,25 +10,81 @@ LANG: C++
 #include <fstream>
 #include <string>
 #include <vector>
+#include <map>
+#include <algorithm>
 
 using namespace std;
+
+vector<int> cowsNum {0,1,2,3,4,5,6,7};
+vector<int> adj[8];
+
+bool test(){
+    for(int i = 0; i < 8; i++){
+        if(adj[cowsNum[i]].size() == 0)
+            continue;
+        if(adj[cowsNum[i]].size() == 1){
+            if(*(cowsNum.begin() + i  +1)== adj[cowsNum[i]][0] || *(cowsNum.begin() + i - 1) == adj[cowsNum[i]][0])
+                continue;
+            else
+                return false;
+        }
+        if(adj[cowsNum[i]].size() == 2){
+            if((*(cowsNum.begin() + i  +1)== adj[cowsNum[i]][0] || *(cowsNum.begin() + i - 1) == adj[cowsNum[i]][0]) && (*(cowsNum.begin() + i  +1)== adj[cowsNum[i]][1] || *(cowsNum.begin() + i - 1) == adj[cowsNum[i]][1]))
+                continue;
+            else
+                return false;
+        }
+    }
+    return true;
+}
 
 int main() {
     ofstream fout ("lineup.out");
     ifstream fin ("lineup.in");
     int N;
+    
     string dummy;
 
-    vector<string> cows[8] = {"Beatrice","Belinda", "Bella","Bessie", "Betsy", "Blue","Buttercup","Sue"};
+    map<string,int> cowsToInt{
+        {"Beatrice",0},
+        {"Belinda",1},
+        { "Bella",2},
+        {"Bessie",3},
+        {"Betsy",4},
+        {"Blue",5},
+        {"Buttercup",6},
+        {"Sue",7}
+    };
+    map<int,string> intToCows{
+        {0,"Beatrice"},
+        {1,"Belinda"},
+        {2,"Bella"},
+        {3,"Bessie"},
+        {4,"Betsy"},
+        {5,"Blue"},
+        {6,"Buttercup"},
+        {7,"Sue"}
+    };
+    
 
     fin>>N;
-    string conditions[N][2];
 
     for(int i = 0; i < N; i++){
-        fin>>conditions[i][0]>>dummy>>dummy>>dummy>>dummy>>conditions[i][1];
+        string first, second;
+        fin>>first>>dummy>>dummy>>dummy>>dummy>>second;
+        int one, two;
+        one = cowsToInt[first];
+        two = cowsToInt[second];
+        adj[one].push_back(two);
+        adj[two].push_back(one);
     }
 
-
-    fout<<conditions[1][1];
+    while(next_permutation(cowsNum.begin(),cowsNum.end())){
+        if(test())
+            break;
+    }
+    for(int i = 0; i < 8; i++){
+        fout<<intToCows[cowsNum[i]]<<endl;
+    }
     return 0;
 }
