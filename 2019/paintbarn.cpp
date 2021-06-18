@@ -84,13 +84,13 @@ int main(){
             //     extra++;
             // if(find(endingPairs.begin(),endingPairs.end(),coords1) != endingPairs.end())
             //     extra--;
-            area[x][y] = area[x-1][y] + area[x][y-1] - area[x-1][y-1] + netExtra[x][y];
-            cout<<area[x][y];
-            if(true)
-                count++; 
+            //area[x][y] = area[x-1][y] + area[x][y-1] - area[x-1][y-1] + netExtra[x][y];
+            //if(area[x-1][y] + area[x][y-1] - area[x-1][y-1] + netExtra[x][y] == 5)
+                //count++; 
         }
     }
 
     cout<<count;
     
+    return 0;
 }
